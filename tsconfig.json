@@ -1,0 +1,25 @@
+{
+  "compilerOptions": {
+    "target": "es2016",
+    "lib": ["ES6"],
+    "module": "commonjs",
+    "outDir": "./dist",
+    "esModuleInterop": true,
+    "strict": true,
+    "noImplicitAny": true,
+    "skipLibCheck": true,
+    "baseUrl": "src",
+    "paths": {
+      "@src/*": ["*"],
+      "@controllers/*": ["controllers/*"],
+      "@helpers/*": ["helpers/*"],
+      "@middlewares/*": ["middlewares/*"],
+      "@validators/*": ["validators/*"],
+      "@models/*": ["models/*"],
+      "@routers/*": ["routers/*"],
+      "@services/*": ["services/*"]
+    }
+  },
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "./dist", "spec"]
+}
