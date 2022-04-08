@@ -58,129 +58,133 @@ describe('Product Model', () => {
   });
 });
 
-// describe('Product api', () => {
-//   const agent = request(app);
-//   let userToken = '';
-//   let adminToken = '';
-//   beforeAll(async () => {
-//     await prepareUsers();
-//     await ['user', 'admin'].map(async (type) => {
-//       const { token } = await login(agent, type as unknown as 'user' | 'admin');
-//       switch (type) {
-//         case 'user': {
-//           userToken = `Bearer ${token}`;
-//           break;
-//         }
-//         case 'admin': {
-//           adminToken = `Bearer ${token}`;
-//           break;
-//         }
-//       }
-//     });
-//   });
-//   beforeEach(prepare);
-//   afterAll(truncateTable);
+describe('Product api', () => {
+  const agent = request(app);
+  let userToken = '';
+  let adminToken = '';
+  beforeAll(async () => {
+    await prepareUsers();
+    await Promise.all(
+      ['user', 'admin'].map(async (type) => {
+        const { token } = await login(
+          agent,
+          type as unknown as 'user' | 'admin'
+        );
+        switch (type) {
+          case 'user': {
+            userToken = `Bearer ${token}`;
+            break;
+          }
+          case 'admin': {
+            adminToken = `Bearer ${token}`;
+            break;
+          }
+        }
+      })
+    );
+  });
+  beforeEach(prepare);
+  afterAll(truncateTable);
 
-//   it("admin can create product - user can't", async () => {
-//     // admin
-//     const adminRes = await agent
-//       .post('/product')
-//       .set({ Authorization: adminToken })
-//       .send({
-//         name: 'Product 88',
-//         description: 'words to fill description',
-//         price: 15.99,
-//       });
-//     expect(adminRes.status).toBe(201);
-//     expect(adminRes.body.status).toBe('success');
+  it("admin can create product - user can't", async () => {
+    // admin
+    const adminRes = await agent
+      .post('/product/')
+      .set({ Authorization: adminToken })
+      .send({
+        name: 'Product 88',
+        description: 'words to fill description',
+        price: 15.99,
+      });
+    expect(adminRes.status).toBe(201);
+    expect(adminRes.body.status).toBe('success');
 
-//     // user
-//     const userRes = await agent
-//       .post('/product')
-//       .set({ Authorization: userToken })
-//       .send({
-//         name: 'Product 89',
-//         description: 'words to fill description',
-//         price: 15.69,
-//       });
-//     expect(userRes.status).toBe(401);
-//   });
+    // user
+    const userRes = await agent
+      .post('/product')
+      .set({ Authorization: userToken })
+      .send({
+        name: 'Product 89',
+        description: 'words to fill description',
+        price: 15.69,
+      });
+    expect(userRes.status).toBe(401);
+  });
 
-//   it("admin can update Product - user can't", async () => {
-//     // admin
-//     const adminRes = await agent
-//       .patch('/product/2')
-//       .set({ Authorization: adminToken })
-//       .send({
-//         price: 55.19,
-//       });
-//     expect(adminRes.status).toBe(200);
-//     expect(adminRes.body.status).toBe('success');
-//     expect(adminRes.body.data.id).toBe(2);
-//     expect(adminRes.body.data.price).toBe(55.19);
+  it("admin can update Product - user can't", async () => {
+    // admin
+    const adminRes = await agent
+      .patch('/product/2')
+      .set({ Authorization: adminToken })
+      .send({
+        price: 55.19,
+      });
+    expect(adminRes.status).toBe(200);
+    expect(adminRes.body.status).toBe('success');
+    expect(adminRes.body.data.id).toBe(2);
+    expect(adminRes.body.data.price).toBe(55.19);
 
-//     // user
-//     const userRes = await agent
-//       .patch('/product/2')
-//       .set({ Authorization: userToken })
-//       .send({
-//         price: 55.69,
-//       });
-//     expect(userRes.status).toBe(401);
-//   });
+    // user
+    const userRes = await agent
+      .patch('/product/2')
+      .set({ Authorization: userToken })
+      .send({
+        price: 55.69,
+      });
+    expect(userRes.status).toBe(401);
+  });
 
-//   it('admin and user can see products', async () => {
-//     // admin
-//     const adminRes = await agent
-//       .get('/product/')
-//       .set({ Authorization: adminToken });
+  it('admin and user can see products', async () => {
+    // admin
+    const adminRes = await agent
+      .get('/product/')
+      .set({ Authorization: adminToken });
+    expect(adminRes.status).toBe(200);
+    expect(adminRes.body.status).toBe('success');
+    expect(adminRes.body.data.length).toBeGreaterThan(1);
+    // user
+    const userRes = await agent
+      .get('/product/')
+      .set({ Authorization: userToken });
 
-//     expect(adminRes.status).toBe(200);
-//     expect(adminRes.body.status).toBe('success');
-//     expect(adminRes.body.length).toBeGreaterThan(1);
-//     // user
-//     const userRes = await agent
-//       .get('/product/')
-//       .set({ Authorization: userToken });
+    expect(userRes.status).toBe(200);
+    expect(userRes.body.status).toBe('success');
+    expect(userRes.body.data.length).toBeGreaterThan(1);
+  });
 
-//     expect(userRes.status).toBe(200);
-//     expect(userRes.body.status).toBe('success');
-//     expect(userRes.body.length).toBeGreaterThan(1);
-//   });
+  it('admin and user can see product', async () => {
+    // admin
+    const adminRes = await agent
+      .get('/product/2')
+      .set({ Authorization: adminToken });
 
-//   it('admin and user can see product', async () => {
-//     // admin
-//     const adminRes = await agent
-//       .get('/product/2')
-//       .set({ Authorization: adminToken });
+    expect(adminRes.status).toBe(200);
+    expect(adminRes.body.status).toBe('success');
+    expect(adminRes.body.data.id).toBe(2);
+    // user
+    const userRes = await agent
+      .get('/product/4')
+      .set({ Authorization: userToken });
 
-//     expect(adminRes.status).toBe(200);
-//     expect(adminRes.body.status).toBe('success');
-//     expect(adminRes.body.data.id).toBe(2);
-//     // user
-//     const userRes = await agent
-//       .get('/product/4')
-//       .set({ Authorization: userToken });
+    expect(userRes.status).toBe(200);
+    expect(userRes.body.status).toBe('success');
+    expect(userRes.body.data.id).toBe(4);
+  });
 
-//     expect(userRes.status).toBe(200);
-//     expect(userRes.body.status).toBe('success');
-//     expect(userRes.body.data.id).toBe(4);
-//   });
+  it("admin can soft delete product - user can't", async () => {
+    // admin
+    const adminRes = await agent
+      .delete('/product/3')
+      .set({ Authorization: adminToken });
 
-//   it("admin can soft delete product - user can't", async () => {
-//     // admin
-//     const adminRes = await agent
-//       .delete('/product/3')
-//       .set({ Authorization: adminToken });
+    expect(adminRes.status).toBe(200);
+    expect(adminRes.body.status).toBe('success');
 
-//     expect(adminRes.status).toBe(200);
-//     expect(adminRes.body.status).toBe('success');
+    // user
+    const userRes = await agent
+      .delete('/product/4')
+      .set({ Authorization: userToken });
 
-//     // user
-//     const userRes = await agent
-//       .delete('/product/4')
-//       .set({ Authorization: userToken });
-
-//     expect(userRes.status).toBe(401);
-//   });
-// });
+    expect(userRes.status).toBe(401);
+  });
+});

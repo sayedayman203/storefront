@@ -1,7 +1,7 @@
 export const updateQuery = (
-  body: { [key: string]: string | number },
+  body: { [key: string]: string | number | Date },
   whiteList?: string[]
-): [string[], (string | number)[]] => {
+): [string[], (string | number | Date)[]] => {
   const updates = [];
   const data = [];
 

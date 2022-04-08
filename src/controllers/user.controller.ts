@@ -1,9 +1,8 @@
-import { UserOPass } from './../models/user.model';
+import { Request, Response, NextFunction } from 'express';
 import { createToken } from '@helpers/jwt';
 import createError from 'http-errors';
 import { createResponse } from '@helpers/responseFactory';
-import { UserStore } from '@models/user.model';
-import { Request, Response, NextFunction } from 'express';
+import { UserStore, UserOPass } from '@models/user.model';
 
 export const index = async (
   req: Request,
@@ -33,7 +32,7 @@ export const show = async (
     try {
       user = await store.show(id as unknown as number);
     } catch (e) {
-      return next(createError(400));
+      return next(createError(404));
     }
   }
   if (user.password) {
@@ -84,7 +83,6 @@ export const login = async (
       next(createError(401));
     }
   } catch (e) {
-    console.log(e);
     next(createError(400));
   }
 };

@@ -16,7 +16,7 @@
       "@middlewares/*": ["middlewares/*"],
       "@validators/*": ["validators/*"],
       "@models/*": ["models/*"],
-      "@routers/*": ["routers/*"],
+      "@handlers/*": ["handlers/*"],
       "@services/*": ["services/*"]
     }
   },

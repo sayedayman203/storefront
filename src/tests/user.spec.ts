@@ -62,24 +62,6 @@ describe('User Model', () => {
 
 describe('User api', () => {
   const agent = request(app);
-  //   let userToken = '';
-  //   let adminToken = '';
-  //   beforeAll(async () => {
-  //     await prepareUsers();
-  //     await ['user', 'admin'].map(async (type) => {
-  //       const { token } = await login(agent, type as unknown as 'user' | 'admin');
-  //       switch (type) {
-  //         case 'user': {
-  //           userToken = `Bearer ${token}`;
-  //           break;
-  //         }
-  //         case 'admin': {
-  //           adminToken = `Bearer ${token}`;
-  //           break;
-  //         }
-  //       }
-  //     });
-  //   });
   beforeEach(prepare);
   afterAll(truncateTable);
 

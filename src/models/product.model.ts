@@ -6,6 +6,7 @@ export type Product = {
   name: string;
   description: string;
   price: number;
+  deleted_at?: Date;
 };
 
 export class ProductStore {
@@ -82,16 +83,4 @@ export class ProductStore {
       }
     }
   }
-
-  //   async delete(id: string): Promise<Product> {
-  //     try {
-  //       const conn = await Client.connect();
-  //       const sql = 'DELETE FROM products WHERE id = ($1);';
-  //       const result = await conn.query(sql, [id]);
-  //       conn.release();
-  //       return result.rows[0];
-  //     } catch (error) {
-  //       throw new Error(`Could not delete products. Error: ${error}`);
-  //     }
-  //   }
 }

@@ -1,5 +1,6 @@
-import { UserRoutes } from './handlers/user.handler';
-import { isAuth } from './middlewares/isAuth';
+import { UserRoutes } from '@handlers/user.handler';
+import { ProductRoutes } from '@handlers/product.handler';
+import { isAuth } from '@middlewares/isAuth';
 import { createResponse } from './helpers/responseFactory';
 import fs from 'fs';
 import { join } from 'path';
@@ -10,10 +11,14 @@ import rateLimit from 'express-rate-limit';
 import cors from 'cors';
 import helmet from 'helmet';
 import logger from 'morgan';
+import { types } from 'pg';
 
 const app = express();
 
 //** config
+types.setTypeParser(1700, (val: string): number => {
+  return parseFloat(val);
+});
 if (process.env.NODE_ENV === 'production') {
   // limit 100 request every minute for user
   app.use(
@@ -57,6 +62,7 @@ app.use(express.urlencoded({ extended: false }));
 //** handlers
 app.use(isAuth);
 UserRoutes(app);
+ProductRoutes(app);
 
 // catch 404 and forward to error handler
 app.use((req: Request, res: Response, next: NextFunction): void => {

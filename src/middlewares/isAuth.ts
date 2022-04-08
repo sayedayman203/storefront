@@ -36,11 +36,11 @@ export const isAuth = async (
 };
 
 export const checkRole =
-  (role: User['role'] | User['role'][]) =>
+  (role: User['role'] | User['role'][] = ['user', 'admin']) =>
   (req: Request, res: Response, next: NextFunction) => {
     if (
-      (Array.isArray(role) && role.includes(res.locals.user.role)) ||
-      res.locals.user.role === role
+      (Array.isArray(role) && role.includes(res.locals.user?.role)) ||
+      res.locals.user?.role === role
     ) {
       return next();
     }

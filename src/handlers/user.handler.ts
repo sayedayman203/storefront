@@ -1,9 +1,4 @@
-import { updateAdminValidation } from './../validators/user.validator';
-import { updateUserValidation } from '@validators/user.validator';
-import {
-  catchValidationError,
-  catchValidationErrorForUpdates,
-} from '@middlewares/validationError';
+import { Application } from 'express';
 import { checkRole } from '@middlewares/isAuth';
 import {
   create,
@@ -12,11 +7,17 @@ import {
   login,
   update,
 } from '@controllers/user.controller';
-import { Application } from 'express';
 import {
+  updateUserValidation,
+  updateAdminValidation,
   loginValidation,
   registerValidation,
 } from '@validators/user.validator';
+import {
+  catchValidationError,
+  catchValidationErrorForUpdates,
+} from '@middlewares/validationError';
+
 export const UserRoutes = (app: Application) => {
   app.post('/user/login', loginValidation, catchValidationError, login);
   app.post('/user/', registerValidation, catchValidationError, create);
