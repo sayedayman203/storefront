@@ -18,12 +18,18 @@ export const updateQuery = (
   return [updates, data];
 };
 
-export const expand = (rows: number, columns: number, start = 1): string => {
+export const expand = (
+  rows: number,
+  columns: number,
+  cb?: (...args: number[]) => string,
+  start = 1
+): string => {
   let index = start;
   return [...Array(rows).keys()]
-    .map(
-      () =>
-        `(${[...Array(columns).keys()].map(() => `$${index++}`).join(', ')})`
+    .map(() =>
+      cb
+        ? cb(...[...Array(columns).keys()].map(() => index++))
+        : `(${[...Array(columns).keys()].map(() => `$${index++}`).join(', ')})`
     )
     .join(', ');
 };

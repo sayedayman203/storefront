@@ -1,3 +1,4 @@
+import { OrderRoutes } from './handlers/order.handler';
 import { UserRoutes } from '@handlers/user.handler';
 import { ProductRoutes } from '@handlers/product.handler';
 import { isAuth } from '@middlewares/isAuth';
@@ -19,6 +20,7 @@ const app = express();
 types.setTypeParser(1700, (val: string): number => {
   return parseFloat(val);
 });
+
 if (process.env.NODE_ENV === 'production') {
   // limit 100 request every minute for user
   app.use(
@@ -63,6 +65,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(isAuth);
 UserRoutes(app);
 ProductRoutes(app);
+OrderRoutes(app);
 
 // catch 404 and forward to error handler
 app.use((req: Request, res: Response, next: NextFunction): void => {

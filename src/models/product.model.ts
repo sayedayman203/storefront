@@ -36,6 +36,7 @@ export class ProductStore {
     }
   }
 
+  //* have ability to create one or multible products
   async create(product: Product | Product[]): Promise<Product[]> {
     try {
       const conn = await Client.connect();

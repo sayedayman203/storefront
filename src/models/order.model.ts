@@ -8,11 +8,11 @@ export type Order = {
 };
 
 export class OrderStore {
-  async index(): Promise<Order[]> {
+  async index(uid?: number): Promise<Order[]> {
     try {
       const conn = await Client.connect();
-      const sql = 'SELECT * FROM orders;';
-      const result = await conn.query(sql);
+      const sql = `SELECT * FROM orders${uid ? ' WHERE user_id = ($1)' : ''};`;
+      const result = await conn.query(sql, uid ? [uid] : undefined);
       conn.release();
       return result.rows;
     } catch (error) {
@@ -20,38 +20,33 @@ export class OrderStore {
     }
   }
 
-  async show(id: string): Promise<Order[]> {
+  async checkUser(oid: number, uid: number): Promise<boolean> {
     try {
       const conn = await Client.connect();
-      const sql = 'SELECT * FROM orders WHERE id = ($1);';
-      const result = await conn.query(sql, [id]);
+      const sql = `SELECT * FROM orders WHERE id = ($1) AND user_id = ($2);`;
+      const result = await conn.query(sql, [oid, uid]);
       conn.release();
-      return result.rows[0];
+      if (result.rows[0]) {
+        return true;
+      } else {
+        return false;
+      }
     } catch (error) {
-      throw new Error(`Could not get order. Error: ${error}`);
+      throw new Error(`Could not get orders. Error: ${error}`);
     }
   }
 
-  async create(order: Order): Promise<Order[]> {
-    try {
-      const conn = await Client.connect();
-      const sql = 'INSERT INTO orders (user_id, status) VALUES ($1, $2);';
-      const result = await conn.query(sql, [order.user_id, order.status]);
-      conn.release();
-      return result.rows[0];
-    } catch (error) {
-      throw new Error(`Could not create order. Error: ${error}`);
-    }
-  }
-
-  async update(id: number, order: Partial<Order>): Promise<Order[]> {
+  async update(id: number, order: Partial<Order>): Promise<Order> {
     try {
       const conn = await Client.connect();
       const whitelist = ['status'];
 
       const [updates, data] = updateQuery(order, whitelist);
       if (updates.length > 0) {
-        const sql = `UPDATE orders SET ${updates.join(', ')} WHERE id = ${id};`;
+        const sql = `UPDATE orders SET ${updates.join(
+          ', '
+        )} WHERE id = ${id} AND status = 'active'
+        RETURNING *;`;
         const result = await conn.query(sql, data);
         conn.release();
         return result.rows[0];

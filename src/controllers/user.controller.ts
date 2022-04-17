@@ -57,7 +57,13 @@ export const create = async (
       role: 'user',
     });
     if (user.id) {
-      res.status(201).json(createResponse('success'));
+      const { token } = await createToken({ id: user.id });
+      if (user.password) {
+        delete user.password;
+      }
+      res.status(201).json(createResponse('success', { token, user }));
+    } else {
+      throw new Error('Fail');
     }
   } catch (e) {
     next(createError(400));

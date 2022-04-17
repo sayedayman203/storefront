@@ -14,9 +14,8 @@
     "lint:f": "eslint src/**/*.ts --fix",
     "prettier": "prettier --config .prettierrc 'src/**/*.ts' --write",
     "jasmine": "jasmine",
-    "pretest": "db-migrate up --env test",
-    "test": "cross-env-shell NODE_ENV=test 'npm run build && npm run jasmine'",
-    "posttest": "db-migrate reset --env test"
+    "pretest": "db-migrate reset --env test && db-migrate up --env test",
+    "test": "cross-env-shell NODE_ENV=test 'npm run build && npm run jasmine'"
   },
   "dependencies": {
     "bcrypt": "^5.0.1",

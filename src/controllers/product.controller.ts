@@ -83,8 +83,12 @@ export const deleteProduct = async (
     const product = await store.update(id as unknown as number, {
       deleted_at: new Date(),
     });
-    res.status(200).json(createResponse('success', { id: product.id }));
+    if (product.id === parseInt(id)) {
+      res.status(200).json(createResponse('success'));
+    } else {
+      throw new Error('fail');
+    }
   } catch (e) {
-    return next(createError(404));
+    return next(createError(400));
   }
 };

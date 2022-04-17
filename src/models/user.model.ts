@@ -51,35 +51,9 @@ export class UserStore {
         user.role,
       ]);
       conn.release();
-      /**
-       ** set default very first user to be admin
-       *? this is only for testing and helping to create admin
-       *! should remove this condtion if project changed to production mode
-       */
-      if (process.env.NODE_ENV !== 'test' && result.rows[0].id == 1) {
-        this.update(result.rows[0].id, { role: 'admin' });
-      }
       return result.rows[0];
     } catch (error) {
       throw new Error(`Could not create user. Error: ${error}`);
-    }
-  }
-
-  async login(email: string, password: string): Promise<UserOPass | false> {
-    try {
-      const conn = await Client.connect();
-      //   user.password = await hash(user.password, 10);
-      const sql = 'SELECT * FROM users WHERE email = ($1);';
-      const result = await conn.query(sql, [email]);
-      conn.release();
-      if (result.rowCount > 0) {
-        if (await compare(password, result.rows[0].password)) {
-          return result.rows[0];
-        }
-      }
-      return false;
-    } catch (error) {
-      throw new Error(`Could not verify user. Error: ${error}`);
     }
   }
 
@@ -111,6 +85,23 @@ export class UserStore {
       } else {
         throw new Error(`Could not create user. Error: ${error}`);
       }
+    }
+  }
+
+  async login(email: string, password: string): Promise<UserOPass | false> {
+    try {
+      const conn = await Client.connect();
+      const sql = 'SELECT * FROM users WHERE email = ($1);';
+      const result = await conn.query(sql, [email]);
+      conn.release();
+      if (result.rowCount > 0) {
+        if (await compare(password, result.rows[0].password)) {
+          return result.rows[0];
+        }
+      }
+      return false;
+    } catch (error) {
+      throw new Error(`Could not verify user. Error: ${error}`);
     }
   }
 }

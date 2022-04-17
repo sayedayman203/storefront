@@ -19,14 +19,14 @@ import {
 } from '@middlewares/validationError';
 
 export const UserRoutes = (app: Application) => {
-  app.post('/user/login', loginValidation, catchValidationError, login);
   app.post('/user/', registerValidation, catchValidationError, create);
+  app.post('/user/login', loginValidation, catchValidationError, login);
 
   app.get('/user/', checkRole('admin'), index);
 
   app
     .route('/user/me')
-    .all(checkRole(['user', 'admin']))
+    .all(checkRole())
     .get(show)
     .patch(updateUserValidation, catchValidationErrorForUpdates, update);
   app
