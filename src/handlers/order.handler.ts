@@ -1,5 +1,8 @@
 import { Application } from 'express';
-import { orderProductsValidation } from '@validators/order.validator';
+import {
+  orderProductsValidation,
+  updateStatusValidation,
+} from '@validators/order.validator';
 import {
   catchValidationError,
   //   catchValidationErrorForUpdates,
@@ -34,7 +37,14 @@ export const OrderRoutes = (app: Application) => {
       updateOrder
     );
 
-  app.route('/order/:id/status').post(checkRole('admin'), updateStatus);
+  app
+    .route('/order/:id/status')
+    .post(
+      checkRole('admin'),
+      updateStatusValidation,
+      catchValidationError,
+      updateStatus
+    );
 
   app.route('/order/:id/:prodId').delete(checkRole('user'), deleteProduct);
 };

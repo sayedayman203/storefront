@@ -9,7 +9,7 @@ export type DefaultOrderProduct = {
 };
 
 export type OrderProduct = {
-  product_id: number;
+  id: number;
   name: string;
   price: number;
   quantity: number;
@@ -41,7 +41,7 @@ export class OrderProductsService {
             : ''
         }
         json_agg(json_build_object(
-            'product_id', op.product_id,
+            'id', op.product_id,
             'name', p.name,
             'quantity', op.quantity,
             'price', op.price

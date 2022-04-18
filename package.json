@@ -6,10 +6,10 @@
   "author": "Sayed Ayman <sayedayman203@gmail.com>",
   "license": "MIT",
   "scripts": {
+    "prestart": "npm run build",
     "start": "node dist/index.js",
-    "start:prod": "cross-env NODE_ENV=production npm run start",
     "build": "tsc --project tsconfig.json && tscpaths -p tsconfig.json -s ./src -o ./dist",
-    "watch": "cross-env NODE_ENV=development tsc-watch --esModuleInterop src/index.ts --outDir ./dist --onSuccess 'npm run start'",
+    "watch": "tsc-watch --esModuleInterop src/index.ts --outDir ./dist --onSuccess 'npm run start'",
     "lint": "eslint src/**/*.ts",
     "lint:f": "eslint src/**/*.ts --fix",
     "prettier": "prettier --config .prettierrc 'src/**/*.ts' --write",

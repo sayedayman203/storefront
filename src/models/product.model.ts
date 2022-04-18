@@ -13,7 +13,8 @@ export class ProductStore {
   async index(): Promise<Product[]> {
     try {
       const conn = await Client.connect();
-      const sql = 'SELECT * FROM products WHERE deleted_at IS NULL;';
+      const sql =
+        'SELECT id, name, description, price FROM products WHERE deleted_at IS NULL;';
       const result = await conn.query(sql);
       conn.release();
       return result.rows;
@@ -25,7 +26,7 @@ export class ProductStore {
   async show(id: number, deleted = false): Promise<Product> {
     try {
       const conn = await Client.connect();
-      const sql = `SELECT * FROM products WHERE id = ($1)${
+      const sql = `SELECT id, name, description, price FROM products WHERE id = ($1)${
         deleted ? ' AND deleted_at IS NOT NULL' : ''
       };`;
       const result = await conn.query(sql, [id]);
@@ -51,7 +52,7 @@ export class ProductStore {
       const sql = `INSERT INTO products (name, description, price) VALUES ${expand(
         values.length / 3,
         3
-      )} RETURNING *;`;
+      )} RETURNING id, name, description, price;`;
       const result = await conn.query(sql, values);
       conn.release();
       return result.rows;
@@ -69,7 +70,7 @@ export class ProductStore {
       if (updates.length > 0) {
         const sql = `UPDATE products SET ${updates.join(
           ', '
-        )} WHERE id = ${id} RETURNING *;`;
+        )} WHERE id = ${id} RETURNING id, name, description, price;`;
         const result = await conn.query(sql, data);
         conn.release();
         return result.rows[0];

@@ -55,10 +55,10 @@ describe('Order Products Model', () => {
   it('delete method should delete order product', async () => {
     const order = await orderProductsStore.delete(
       orders[0].id,
-      orders[0].products[0].product_id
+      orders[0].products[0].id
     );
 
     expect(order.order_id).toEqual(orders[0].id);
-    expect(order.product_id).toEqual(orders[0].products[0].product_id);
+    expect(order.product_id).toEqual(orders[0].products[0].id);
   });
 });

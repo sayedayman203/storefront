@@ -1,12 +1,5 @@
 {
   "defaultEnv": "development",
-  "production": {
-    "driver": "pg",
-    "host": { "ENV": "POSTGRES_HOST" },
-    "database": { "ENV": "POSTGRES_DB" },
-    "user": { "ENV": "POSTGRES_USER" },
-    "password": { "ENV": "POSTGRES_PASSWORD" }
-  },
   "development": {
     "driver": "pg",
     "host": { "ENV": "POSTGRES_HOST" },
