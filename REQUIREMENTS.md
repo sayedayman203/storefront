@@ -4,18 +4,6 @@ The company stakeholders want to create an online storefront to showcase their g
 
 These are the notes from a meeting with the frontend developer that describe what endpoints the API needs to supply, as well as data shapes the frontend and backend have agreed meet the requirements of the application.
 
-## initialization
-
-- copy `env.template` to `.env`.
-- create database after connect to psql `CREATE DATABASE storefront;` if not exists.
-- create test database `CREATE DATABASE storefront_test;` if not exists.
-- edit env db credientials to your own `POSTGRES_HOST, POSTGRES_DB, POSTGRES_TEST_DB, POSTGRES_USER, POSTGRES_PASSWORD`.
-- run `db-migrate up`.
-- run `initialization.sql` file with `psql -U postgres -d storefront -a -f initialization.sql `.
-  or just create admin with first query.
-- make sure JWT_SECRET equal to `d2&U21@4Eg$H=kHsK` to use my password `123456789`.
-- run tests with `npm run test` or start wuth `npm run start`.
-
 ## API Endpoints
 
 #### Users
