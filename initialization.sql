@@ -3,7 +3,7 @@ INSERT INTO users(first_name, last_name, email, password, role)
 	VALUES ('fname', 'lname', 'admin@gmail.com', '$2b$10$COq.rKU6Ao3sX/gZhsAkXuGbNBMxJixG.0qbrj0x04k0CKFO06aZm', 'admin');
 
 INSERT INTO users(first_name, last_name, email, password, role)
-	VALUES ('Sayed', 'Ayman', 'user1@gmail.com', '$2b$10$COq.rKU6Ao3sX/gZhsAkXuGbNBMxJixG.0qbrj0x04k0CKFO06aZm', 'user');
+	VALUES ('Sayed', 'Ayman', 'user1@gmail.com', '$2b$10$COq.rKU6Ao3sX/gZhsAkXuGbNBMxJixG.0qbrj0x04k0CKFO06aZm', 'user'),
            ('Sayed', 'Ayman', 'user2@gmail.com', '$2b$10$COq.rKU6Ao3sX/gZhsAkXuGbNBMxJixG.0qbrj0x04k0CKFO06aZm', 'user');
 
 -- create products
